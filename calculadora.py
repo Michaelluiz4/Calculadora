@@ -1,3 +1,5 @@
+from tkinter import *
+
 class Calculadora:
     def __init__(self, primeiro_numero=0, segundo_numero=0):
         self.primeiro_numero = primeiro_numero
@@ -19,7 +21,7 @@ class Calculadora:
         print('3 - Multiplicação') 
         print('4 - divisão')
 
-        self.opcao = int(input('Escolha a opção desejada: '))
+        #self.opcao = int(input('Escolha a opção desejada: '))
 
 
     def soma(self):
@@ -56,3 +58,43 @@ class Calculadora:
             return 'Erro. Escolha uma opção válida.'
 
 
+
+windows = Tk()
+windows.title('Calculadora')
+windows.geometry('600x700')
+
+text = Label(windows, text='', width=10, height=10)
+text.grid(row=0, column=0)
+
+botao7 = Button(windows, text='7', width=10, height=7)
+botao7.grid(row=1, column=0)
+
+botao8 = Button(windows, text='8', width=10, height=7)
+botao8.grid(row=1, column=1)
+
+botao9 = Button(windows, text='9', width=10, height=7)
+botao9.grid(row=1, column=2)
+
+botao4 = Button(windows, text='4', width=10, height=7)
+botao4.grid(row=2, column=0)
+
+botao5 = Button(windows, text='5', width=10, height=7)
+botao5.grid(row=2, column=1)
+
+botao6 = Button(windows, text='6', width=10, height=7)
+botao6.grid(row=2, column=2)
+
+botao1 = Button(windows, text='1', width=10, height=7)
+botao1.grid(row=3, column=0)
+
+botao2 = Button(windows, text='2', width=10, height=7)
+botao2.grid(row=3, column=1)
+
+botao3 = Button(windows, text='3', width=10, height=7)
+botao3.grid(row=3, column=2)
+
+botao0 = Button(windows, text='0', width=10, height=7)
+botao0.grid(row=4, column=0)
+
+
+windows.mainloop()
