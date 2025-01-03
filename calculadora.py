@@ -1,100 +1,74 @@
 from tkinter import *
 
 class Calculadora:
-    def __init__(self, primeiro_numero=0, segundo_numero=0):
-        self.primeiro_numero = primeiro_numero
-        self.segundo_numero = segundo_numero
+    def __init__(self):
+        self.operacao = ""  # String para armazenar a operação atual
 
-    
-    def entrada(self):
+    def atualizar_visor(self, valor):
+        """Atualiza o visor da calculadora com o valor clicado."""
+        self.operacao += str(valor)
+        visor.config(text=self.operacao)
+
+    def limpar_visor(self):
+        """Limpa o visor."""
+        self.operacao = ""
+        visor.config(text=self.operacao)
+
+    def calcular(self):
+        """Avalia a operação no visor e exibe o resultado."""
         try:
-            self.primeiro_numero = float(input('Primeiro número: '))
-            self.segundo_numero = float(input('Segundo número: '))
-        except ValueError:
-            print('Erro. Digite apenas números.')
-            self.entrada()
-
-
-    def opcoes(self):
-        print('1 - Soma')
-        print('2 - Subtração') 
-        print('3 - Multiplicação') 
-        print('4 - divisão')
-
-        #self.opcao = int(input('Escolha a opção desejada: '))
-
-
-    def soma(self):
-        return self.primeiro_numero + self.segundo_numero
-
-
-    def subtracao(self):
-        return self.primeiro_numero - self.segundo_numero
-
-
-    def multiplicacao(self):
-        return self.primeiro_numero * self.segundo_numero
-
-
-    def divisao(self):
-        try:
-            return self.primeiro_numero / self.segundo_numero
+            resultado = eval(self.operacao)
+            visor.config(text=str(resultado))
+            self.operacao = str(resultado)  # Atualiza para continuar o cálculo
         except ZeroDivisionError:
-            return 'Erro. Não é possível fazer divisão por zero.'
+            visor.config(text='Não é possível dividir por zero.')
+        except Exception:
+            visor.config(text="Erro")
+            self.operacao = ""
 
-
-    def resultado(self):
-        self.opcoes()
-
-        if self.opcao == 1:
-            return self.soma()
-        elif self.opcao == 2:
-            return self.subtracao()
-        elif self.opcao == 3:
-            return self.multiplicacao()
-        elif self.opcao == 4:
-            return self.divisao()
-        else:
-            return 'Erro. Escolha uma opção válida.'
-
-
-
+# Criando a janela principal
 windows = Tk()
-windows.title('Calculadora')
-windows.geometry('600x700')
+windows.title("Calculadora")
 
-text = Label(windows, text='', width=10, height=10)
-text.grid(row=0, column=0)
+# Instância da classe Calculadora
+calculadora = Calculadora()
 
-botao7 = Button(windows, text='7', width=10, height=7)
-botao7.grid(row=1, column=0)
+# Visor da calculadora
+visor = Label(windows, text="", font=("Arial", 24), bg="white", fg="black", height=2, anchor="e")
+visor.grid(row=0, column=0, columnspan=4, sticky="ew")
 
-botao8 = Button(windows, text='8', width=10, height=7)
-botao8.grid(row=1, column=1)
+# Função para criar botões dinamicamente
+def criar_botao(texto, linha, coluna, largura=1, comando=None):
+    botao = Button(
+        windows, text=texto, width=10 * largura, height=4, font=("Arial", 16),
+        command=comando
+    )
+    botao.grid(row=linha, column=coluna, columnspan=largura, sticky="ew")
+    return botao
 
-botao9 = Button(windows, text='9', width=10, height=7)
-botao9.grid(row=1, column=2)
+# Criando os botões
+criar_botao("AC", 1, 0, largura=2, comando=calculadora.limpar_visor)
+criar_botao("%", 1, 2, comando=lambda: calculadora.atualizar_visor("%"))
+criar_botao("÷", 1, 3, comando=lambda: calculadora.atualizar_visor("/"))
 
-botao4 = Button(windows, text='4', width=10, height=7)
-botao4.grid(row=2, column=0)
+criar_botao("7", 2, 0, comando=lambda: calculadora.atualizar_visor("7"))
+criar_botao("8", 2, 1, comando=lambda: calculadora.atualizar_visor("8"))
+criar_botao("9", 2, 2, comando=lambda: calculadora.atualizar_visor("9"))
+criar_botao("X", 2, 3, comando=lambda: calculadora.atualizar_visor("*"))
 
-botao5 = Button(windows, text='5', width=10, height=7)
-botao5.grid(row=2, column=1)
+criar_botao("4", 3, 0, comando=lambda: calculadora.atualizar_visor("4"))
+criar_botao("5", 3, 1, comando=lambda: calculadora.atualizar_visor("5"))
+criar_botao("6", 3, 2, comando=lambda: calculadora.atualizar_visor("6"))
+criar_botao("-", 3, 3, comando=lambda: calculadora.atualizar_visor("-"))
 
-botao6 = Button(windows, text='6', width=10, height=7)
-botao6.grid(row=2, column=2)
+criar_botao("1", 4, 0, comando=lambda: calculadora.atualizar_visor("1"))
+criar_botao("2", 4, 1, comando=lambda: calculadora.atualizar_visor("2"))
+criar_botao("3", 4, 2, comando=lambda: calculadora.atualizar_visor("3"))
+criar_botao("+", 4, 3, comando=lambda: calculadora.atualizar_visor("+"))
 
-botao1 = Button(windows, text='1', width=10, height=7)
-botao1.grid(row=3, column=0)
+criar_botao("0", 5, 0, largura=2, comando=lambda: calculadora.atualizar_visor("0"))
+criar_botao(".", 5, 2, comando=lambda: calculadora.atualizar_visor("."))
+criar_botao("=", 5, 3, comando=calculadora.calcular)
 
-botao2 = Button(windows, text='2', width=10, height=7)
-botao2.grid(row=3, column=1)
-
-botao3 = Button(windows, text='3', width=10, height=7)
-botao3.grid(row=3, column=2)
-
-botao0 = Button(windows, text='0', width=10, height=7)
-botao0.grid(row=4, column=0)
-
-
+# Loop principal
 windows.mainloop()
