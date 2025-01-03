@@ -1,4 +1,5 @@
 from tkinter import *
+import re
 
 class Calculadora:
     def __init__(self):
@@ -17,7 +18,8 @@ class Calculadora:
     def calcular(self):
         """Avalia a operação no visor e exibe o resultado."""
         try:
-            resultado = eval(self.operacao)
+            expressao = re.sub(r'(\d+)%(\d+)', r'(\1/100)*\2', self.operacao)
+            resultado = eval(expressao)
             visor.config(text=str(resultado))
             self.operacao = str(resultado)  # Atualiza para continuar o cálculo
         except ZeroDivisionError:
